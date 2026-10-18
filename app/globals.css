@@ -928,10 +928,6 @@ ol {
 
 /* ───────── Oppenheimer ───────── */
 
-.xp-oppenheimer .xp-themed .logo {
-  filter: grayscale(0.3);
-}
-
 .xp-oppenheimer .xp-themed .xp-co {
   font-family: var(--font-winter), serif;
   font-weight: 500;
@@ -1047,10 +1043,6 @@ ol {
   49% {
     opacity: 0;
   }
-}
-
-.xp-anime .xp-themed .logo {
-  filter: grayscale(1) contrast(1.2);
 }
 
 /* heavy white serif with a red ghost, after the show's title card */
