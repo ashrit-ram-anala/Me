@@ -1,0 +1,836 @@
+/* ───────────────────────── tokens ───────────────────────── */
+
+:root {
+  --paper: #f2efe9;
+  --paper-glyph: #f6f4ef;
+  --hi: rgba(255, 255, 255, 0.95);
+  --shadow: rgba(150, 138, 118, 0.32);
+  --ink: #5a544b;
+  --ink-soft: #857e72;
+  --ink-strong: #3b3630;
+  --hair: rgba(90, 78, 60, 0.09);
+  --ease-burst: cubic-bezier(0.65, 0, 0.25, 1);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+::selection {
+  background: #e4ded3;
+  color: var(--ink-strong);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink-soft);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* ───────────────────────── layout ───────────────────────── */
+
+.sec {
+  position: relative;
+  padding: clamp(48px, 6vw, 68px) 0;
+}
+
+.sec + .sec::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(712px, calc(100% - 48px));
+  translate: -50% 0;
+  height: 2px;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hi);
+}
+
+.wrap {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.sec-intro {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.sec-intro .wrap {
+  width: 100%;
+}
+
+/* concentric grooves pressed into the intro, lit by the cursor (see HeroLight) */
+.grooves {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(180deg, #000 70%, transparent);
+  mask: linear-gradient(180deg, #000 70%, transparent);
+}
+
+/* centred off to the right, partly off the page; drifts a few px away from the light */
+.grooves-set {
+  transform: translate(calc(90% + var(--lx, -0.7) * -6px), calc(56% + var(--ly, -0.7) * -6px));
+  transform-box: view-box;
+}
+
+.grooves circle,
+.grooves line {
+  fill: none;
+  stroke-width: 1.35px;
+}
+
+/* a groove is a dark pit with a bright lip on the side facing away from the light */
+.groove-pit {
+  stroke: rgba(110, 94, 70, 0.25);
+  transform: translate(calc(var(--lx, -0.7) * 1px), calc(var(--ly, -0.7) * 1px));
+}
+
+.groove-lip {
+  stroke: rgba(255, 255, 255, 0.95);
+  transform: translate(calc(var(--lx, -0.7) * -1.3px), calc(var(--ly, -0.7) * -1.3px));
+}
+
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.sec-num {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+}
+
+.sec-head h2 {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--ink);
+}
+
+/* ───────────────────────── embossed off-white ───────────────────────── */
+
+/* raised lettering: a pale face with a lit top-left edge and a crisp extruded bottom-right edge */
+.raised {
+  --sx: 0.7px;
+  --sy: 0.7px;
+  color: #f7f5f0;
+  text-shadow:
+    calc(var(--sx) * -1.2) calc(var(--sy) * -1.2) 0 #fff,
+    calc(var(--sx) * 1.2) calc(var(--sy) * 1.2) 0 #cfc7b9,
+    calc(var(--sx) * 2.4) calc(var(--sy) * 2.4) 0 #d8d1c4,
+    calc(var(--sx) * 4) calc(var(--sy) * 5) 6px rgba(90, 76, 56, 0.22),
+    calc(var(--sx) * 8) calc(var(--sy) * 12) 18px rgba(90, 76, 56, 0.12);
+}
+
+/* the name is lit by the cursor (see HeroLight) */
+.name.raised {
+  --sx: calc(var(--lx, -0.7) * -1px);
+  --sy: calc(var(--ly, -0.7) * -1px);
+}
+
+.logo {
+  --s: 52px;
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 28%;
+  background: var(--paper);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 1px 2px rgba(90, 76, 56, 0.12),
+    3px 5px 12px var(--shadow);
+}
+
+.logo-emboss {
+  width: 58%;
+  height: 58%;
+  filter: drop-shadow(0.8px 1px 0 #c6bdac) drop-shadow(1px 2px 2px rgba(90, 76, 56, 0.32));
+}
+
+.logo-glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--paper-glyph);
+  -webkit-mask: var(--mask) center / contain no-repeat;
+  mask: var(--mask) center / contain no-repeat;
+}
+
+.logo-color img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  user-select: none;
+}
+
+.logo-cover img {
+  object-fit: cover;
+}
+
+.logo-contain {
+  background: transparent;
+  box-shadow: none;
+}
+
+.logo-contain img {
+  object-fit: contain;
+}
+
+/* intro */
+
+.name {
+  font-family: var(--font-serif), serif;
+  font-weight: 400;
+  font-size: clamp(52px, 10.5vw, 100px);
+  line-height: 1;
+  letter-spacing: 0.005em;
+}
+
+.lede {
+  max-width: 36ch;
+  margin-top: 26px;
+  font-size: 17px;
+  color: var(--ink);
+}
+
+.socials {
+  display: flex;
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.socials a {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 1px 2px rgba(90, 76, 56, 0.12),
+    3px 5px 12px var(--shadow);
+}
+
+.socials .icon-github {
+  width: 26px;
+  height: 26px;
+}
+
+.socials svg {
+  width: 19px;
+  height: 19px;
+  fill: var(--paper-glyph);
+  filter: drop-shadow(0.8px 1px 0 #c2b8a6) drop-shadow(1px 2px 2px rgba(90, 76, 56, 0.32));
+}
+
+/* projects */
+
+.proj li + li {
+  border-top: 1px solid var(--hair);
+}
+
+.proj a {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 0;
+}
+
+.proj-main {
+  display: grid;
+  gap: 3px;
+}
+
+.proj-name {
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink-strong);
+}
+
+.proj-context {
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.proj-stack {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+
+.proj-year {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+.proj-arrow {
+  font-size: 15px;
+  color: var(--ink-soft);
+  transition: transform 0.3s var(--ease-burst);
+}
+
+.proj a:hover .proj-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* screenshot that floats into the empty space on hover and tilts with the cursor */
+.proj-shot {
+  position: absolute;
+  right: 110px;
+  top: 50%;
+  width: 240px;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 1px rgba(60, 50, 40, 0.08),
+    0 24px 50px -16px rgba(60, 46, 28, 0.45);
+  opacity: 0;
+  transform: translateY(-46%) perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(0.92);
+  transition:
+    opacity 0.3s,
+    transform 0.35s var(--ease-burst);
+  pointer-events: none;
+}
+
+.proj a:hover .proj-shot {
+  opacity: 1;
+  transform: translateY(-50%) perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1);
+  transition:
+    opacity 0.3s,
+    transform 0.12s ease-out;
+}
+
+/* stack */
+
+.stack {
+  display: grid;
+  gap: 40px;
+}
+
+.stack-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+
+/* fixed icon-width columns so the first icon starts flush with the header; labels center under
+   their icon and are allowed to overhang into the column gap */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 50px);
+  gap: 26px 38px;
+}
+
+.stack-grid li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.stack-logo {
+  --s: 50px;
+}
+
+.stack-name {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* contact */
+
+.contact-big {
+  font-family: var(--font-serif), serif;
+  font-size: clamp(56px, 11vw, 112px);
+  line-height: 1;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-top: 30px;
+}
+
+.contact-links a {
+  color: var(--ink-strong);
+  border-bottom: 1px solid var(--ink-soft);
+  padding-bottom: 2px;
+}
+
+.footer {
+  margin-top: 80px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* ═════════════════════════ experience rows ═════════════════════════ */
+
+.xp-list {
+  display: grid;
+  gap: 4px;
+  margin: 0 -16px;
+}
+
+.xp {
+  position: relative;
+  display: grid;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out;
+}
+
+.xp[data-active="true"] {
+  transition-duration: 0.08s;
+}
+
+.xp-layer {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 20px;
+  min-height: 88px;
+  padding: 14px 18px 14px 16px;
+  border-radius: 18px;
+}
+
+.xp-co {
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink-strong);
+}
+
+.xp-role {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.xp-year {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+/* the burst: a circle that grows from the pointer's entry point */
+.xp-themed {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
+  pointer-events: none;
+  color: #fff;
+  clip-path: circle(0px at var(--x, 50%) var(--y, 50%));
+  transition: clip-path 0.7s var(--ease-burst);
+  box-shadow: 0 24px 50px -20px rgba(30, 22, 12, 0.55);
+}
+
+.xp[data-active="true"] {
+  z-index: 5;
+}
+
+/* soft light that follows the cursor across the tilted card */
+.xp-glare {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.22), transparent 45%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.xp[data-active="true"] .xp-themed {
+  clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+}
+
+.xp-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #08080a;
+}
+
+.xp-bg > * {
+  position: absolute;
+}
+
+.media {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* keeps text legible over photography */
+.scrim {
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.12) 58%, transparent 75%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.xp-themed .logo {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+}
+
+/* logos that aren't tiles (e.g. a round mark) get a shadow that follows their shape, not a box */
+.xp .xp-themed .logo.logo-contain {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.xp .xp-themed .logo-contain img {
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.55));
+}
+
+.xp-themed .xp-co {
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+
+.xp-themed .xp-role {
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+
+.xp-themed .xp-year {
+  color: #fff;
+  font-weight: 500;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* slow push-in on stills so they feel filmed rather than placed */
+.xp[data-active="true"] img.media {
+  animation: push 9s ease-out both;
+}
+
+@keyframes push {
+  from {
+    scale: 1.08;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+/* ───────── F1 ───────── */
+
+.xp-f1 .xp-themed {
+  font-family: var(--font-f1), sans-serif;
+}
+
+.xp-f1 .media {
+  object-position: 50% 50%;
+}
+
+.xp-f1 .xp-themed .xp-co {
+  font-weight: 900;
+  font-style: italic;
+  font-size: 19px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.xp-f1 .xp-themed .xp-year {
+  font-weight: 700;
+}
+
+/* ───────── Space · black hole ───────── */
+
+.xp-space .xp-themed {
+  font-family: var(--font-space), sans-serif;
+}
+
+.xp-space .media {
+  object-position: 50% 50%;
+}
+
+.xp-space .xp-themed .logo {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 0 28px rgba(255, 140, 50, 0.45);
+}
+
+.xp-space .xp-themed .xp-co {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.xp-space .xp-themed .xp-year {
+  color: #ffcf9a;
+  letter-spacing: 0.12em;
+}
+
+/* ───────── Oppenheimer ───────── */
+
+.xp-oppenheimer .xp-themed .logo {
+  filter: grayscale(0.3);
+}
+
+.xp-oppenheimer .xp-themed .xp-co {
+  font-family: var(--font-winter), serif;
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #f3eee4;
+}
+
+.xp-oppenheimer .xp-themed .xp-role {
+  font-family: var(--font-winter), serif;
+  font-style: italic;
+  font-size: 16px;
+}
+
+.xp-oppenheimer .xp-themed .xp-year {
+  font-family: var(--font-winter), serif;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: #f0c27a;
+}
+
+/* ───────── California · Golden Gate ───────── */
+
+.xp-cali .media {
+  object-position: 50% 50%;
+}
+
+.xp-cali .xp-themed .xp-co {
+  font-family: var(--font-cali), cursive;
+  font-size: 30px;
+  line-height: 1.05;
+  text-shadow:
+    2px 2px 0 #c0362c,
+    0 2px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* ───────── Ping-pong ───────── */
+
+/* the red is already calm, so it needs only a light scrim behind the text */
+.scrim-soft {
+  background: linear-gradient(90deg, rgba(60, 0, 8, 0.35), transparent 55%);
+}
+
+.xp-pingpong .media {
+  object-position: 100% 50%;
+}
+
+.xp-pingpong .xp-themed .xp-co {
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.xp-pingpong .xp-themed .xp-year {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── Monster · Johan silhouette edit, film grain, title-card type ───────── */
+
+.xp-anime .xp-bg {
+  background: #070606;
+}
+
+.monster-grain {
+  inset: -50%;
+  opacity: 0.22;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.xp[data-active="true"] .monster-grain {
+  animation: grain 0.5s steps(4) infinite;
+}
+
+@keyframes grain {
+  25% {
+    transform: translate(-3%, 2%);
+  }
+  50% {
+    transform: translate(2%, -3%);
+  }
+  75% {
+    transform: translate(-1%, 3%);
+  }
+}
+
+/* old projector flicker */
+.monster-flicker {
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  mix-blend-mode: overlay;
+}
+
+.xp[data-active="true"] .monster-flicker {
+  animation: flicker 3.2s steps(1) infinite;
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  4% {
+    opacity: 0.12;
+  }
+  6% {
+    opacity: 0;
+  }
+  47% {
+    opacity: 0.07;
+  }
+  49% {
+    opacity: 0;
+  }
+}
+
+.xp-anime .xp-themed .logo {
+  filter: grayscale(1) contrast(1.2);
+}
+
+/* heavy white serif with a red ghost, after the show's title card */
+/* old printed-book serif, after the show's picture book */
+.xp-anime .xp-themed .xp-co {
+  font-family: var(--font-storybook), serif;
+  font-size: 22px;
+  line-height: 1.15;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  color: #f4f0ea;
+  text-shadow:
+    0 0 1px rgba(255, 255, 255, 0.6),
+    3px 1px 0 rgba(160, 14, 22, 0.75),
+    6px 2px 10px rgba(160, 14, 22, 0.55);
+}
+
+.xp[data-active="true"].xp-anime .xp-co {
+  transform-origin: left center;
+  animation: title-in 0.9s 0.1s ease-out both;
+}
+
+/* fades and focuses in without changing the text's width, so long names never re-wrap */
+@keyframes title-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+.xp-anime .xp-themed .xp-role {
+  font-family: var(--font-winter), serif;
+  font-style: italic;
+  font-size: 16px;
+  color: #cfc5b6;
+}
+
+.xp-anime .xp-themed .xp-year {
+  font-family: var(--font-manga), serif;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #f4f0ea;
+}
+
+/* ───────────────────────── small screens ───────────────────────── */
+
+@media (max-width: 640px) {
+  .xp-list {
+    margin: 0 -10px;
+  }
+
+  .grooves {
+    opacity: 0.45;
+  }
+
+  .xp-layer {
+    grid-template-columns: 44px 1fr auto;
+    gap: 14px;
+    padding: 12px 10px;
+  }
+
+  .xp .logo {
+    --s: 44px;
+  }
+
+  .proj-shot {
+    display: none;
+  }
+
+  .stack-grid {
+    column-gap: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-themed {
+    transition-duration: 0.25s;
+  }
+
+  .xp[data-active="true"] *,
+  .xp[data-active="true"] *::before,
+  .xp[data-active="true"] *::after {
+    animation-duration: 0.01s !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+  }
+}
