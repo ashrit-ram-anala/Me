@@ -482,11 +482,75 @@ ol {
   align-items: center;
 }
 
+/* the seal is struck on a coin that turns toward the cursor (see SealCoin) */
+.coin {
+  --s: 190px;
+  --t: 1px; /* gap between rim discs; the edge is --rim of them deep */
+  position: relative;
+  width: var(--s);
+  height: var(--s);
+  perspective: 800px;
+}
+
+.coin-body {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(var(--ty, 0) * var(--max) * -1)) rotateY(calc(var(--tx, 0) * var(--max)));
+}
+
+.coin-face,
+.coin-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.coin-face {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow:
+    inset 1.5px 1.5px 0 var(--tile-hi),
+    inset -2px -2px 3px rgba(var(--drop), 0.12),
+    inset 0 0 0 1px rgba(var(--drop), 0.08);
+}
+
+/* the edge: discs stacked behind the face, darkening toward the back */
+.coin-rim {
+  background: color-mix(in srgb, var(--edge-lo) calc(100% - var(--i) * 3%), var(--glyph-edge));
+  transform: translateZ(calc(var(--i) * var(--t) * -1 - 0.5px));
+}
+
+/* light catching the face as it turns */
+.coin-sheen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at calc(50% - var(--tx, 0) * 60%) calc(50% - var(--ty, 0) * 60%),
+    var(--tile-hi),
+    transparent 55%
+  );
+  opacity: calc(0.25 + (var(--tx, 0) * var(--tx, 0) + var(--ty, 0) * var(--ty, 0)) * 0.6);
+  pointer-events: none;
+}
+
+/* cast on the paper, sliding away from the side that lifts */
+.coin-shadow {
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: rgba(var(--drop), 0.28);
+  filter: blur(14px);
+  transform: translate(calc(8px - var(--tx, 0) * 14px), calc(12px - var(--ty, 0) * 14px));
+}
+
 /* shadows live on the wrapper: a mask on the same element would clip them away */
 .seal {
   display: block;
-  width: 190px;
-  height: 190px;
+  width: 86%;
+  height: 86%;
   filter: drop-shadow(-0.7px -0.7px 0 var(--edge-hi)) drop-shadow(0.9px 1px 0 var(--glyph-edge)) drop-shadow(1.2px 2px 2px rgba(var(--drop), 0.35));
 }
 
@@ -498,6 +562,7 @@ ol {
   -webkit-mask: url(/masks/vanderbilt-seal.png?v=2) center / contain no-repeat;
   mask: url(/masks/vanderbilt-seal.png?v=2) center / contain no-repeat;
 }
+
 
 .edu-school {
   font-family: var(--font-serif), serif;
@@ -570,8 +635,13 @@ ol {
   animation: course-in 0.4s calc(0.04s * var(--i)) var(--ease-burst) both;
 }
 
-.course-extra.course-leaving {
+.course-extra.course-leaving,
+.course-toggle.course-leaving {
   animation: course-out 0.3s var(--ease-burst) both;
+}
+
+.course-toggle-in {
+  animation: course-in 0.4s var(--ease-burst) both;
 }
 
 @keyframes course-in {
@@ -1108,9 +1178,8 @@ ol {
     gap: 24px;
   }
 
-  .seal {
-    width: 136px;
-    height: 136px;
+  .coin {
+    --s: 136px;
   }
 }
 

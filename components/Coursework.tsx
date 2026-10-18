@@ -9,7 +9,7 @@ type Phase = "closed" | "open" | "closing";
 /**
  * Coursework chips that show two rows, ending in a "+N more" link. Opening grows the list (height
  * animates, new chips fade in); collapsing fades the extras out while the height closes, and only
- * then removes them.
+ * then removes them. The toggle's label cross-fades on each swap.
  */
 export function Coursework({ items }: { items: string[] }) {
   const clip = useRef<HTMLDivElement>(null);
@@ -19,6 +19,7 @@ export function Coursework({ items }: { items: string[] }) {
   const [fit, setFit] = useState(items.length); // chips that fit in two rows beside the toggle
   const [phase, setPhase] = useState<Phase>("closed");
   const [height, setHeight] = useState<number | null>(null);
+  const [touched, setTouched] = useState(false); // the toggle only fades once it's been used
 
   // simulate flex-wrap from measured chip widths to find how many fit in LINES rows
   const measure = useCallback(() => {
@@ -62,6 +63,7 @@ export function Coursework({ items }: { items: string[] }) {
   }, [phase, fit]);
 
   const toggle = () => {
+    setTouched(true);
     if (phase === "closed") setPhase("open");
     else if (phase === "open") {
       setPhase("closing");
@@ -93,7 +95,13 @@ export function Coursework({ items }: { items: string[] }) {
             </li>
           ))}
           {hidden > 0 && (
-            <li className="course-toggle">
+            // keyed by label so each swap remounts and fades in; "Collapse" fades out with the extras
+            <li
+              key={phase === "closed" ? "more" : "collapse"}
+              className={
+                phase === "closing" ? "course-toggle course-leaving" : touched ? "course-toggle course-toggle-in" : "course-toggle"
+              }
+            >
               <button type="button" onClick={toggle} aria-expanded={phase === "open"}>
                 {phase === "closed" ? `+${hidden} more` : "Collapse"}
               </button>

@@ -4,6 +4,7 @@ import { Coursework } from "./Coursework";
 import { ExperienceRow } from "./ExperienceRow";
 import { Logo } from "./Logo";
 import { ProjectRow } from "./ProjectRow";
+import { SealCoin } from "./SealCoin";
 import { Socials } from "./Socials";
 
 function SectionHead({ num, title }: { num: string; title: string }) {
@@ -64,13 +65,12 @@ export function Education() {
       <div className="wrap">
         <SectionHead num="03" title="Education" />
         <div className="edu">
-          {/* Vanderbilt's seal, raised out of the paper like the logo glyphs */}
-          <span className="seal" aria-hidden="true">
-            <span className="seal-glyph" />
-          </span>
+          <SealCoin />
           <div className="edu-body">
             <p className="edu-school">{education.school}</p>
-            <p className="edu-degree">{education.degree}</p>
+            <p className="edu-degree">
+              {education.degree} · {education.honors}
+            </p>
             <p className="edu-college">{education.college}</p>
             <Coursework items={education.coursework} />
             <p className="edu-orgs">

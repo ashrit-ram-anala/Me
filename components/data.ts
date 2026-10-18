@@ -12,6 +12,7 @@ export const education = {
   school: "Vanderbilt University",
   college: "School of Engineering",
   degree: "B.S. Computer Science",
+  honors: "Crescere Aude Scholar",
   coursework: [
     "Data Structures",
     "Algorithms",
