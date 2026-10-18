@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import type { Experience, Theme } from "./data";
 import { Logo } from "./Logo";
+import { useScrollFocus } from "./useScrollFocus";
 import { useTilt } from "./useTilt";
 
 const MEDIA_VERSION = 19;
@@ -83,11 +84,14 @@ const backdrops: Record<Theme, (active: boolean) => ReactNode> = {
  * One experience row. It rests as embossed off-white; on mouse hover a clip-path circle bursts
  * from the pointer and reveals a themed card of the same size, then collapses toward the exit
  * point. The logo and text sit in the same place in both layers, and the card tilts toward the
- * cursor.
+ * cursor. On touch screens, scrolling a row past a line a third of the way down the screen does
+ * the same, with the burst blooming from the logo.
  */
 export function ExperienceRow({ e }: { e: Experience }) {
   const { ref, onPointerMove, reset } = useTilt<HTMLLIElement>({ x: 7, y: 2.5 });
-  const [active, setActive] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const focused = useScrollFocus(ref);
+  const active = hovered || focused;
 
   const setOrigin = (x: number, y: number) => {
     const el = ref.current;
@@ -101,6 +105,15 @@ export function ExperienceRow({ e }: { e: Experience }) {
     const far = Math.hypot(Math.max(px, r.width - px), Math.max(py, r.height - py));
     el.style.setProperty("--rmax", `${Math.ceil(far + 40)}px`);
   };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !focused) return;
+    const logo = el.querySelector(".xp-logo")?.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    if (logo) setOrigin(logo.left + logo.width / 2, logo.top + logo.height / 2);
+    else setOrigin(r.left, r.top + r.height / 2);
+  }, [focused]);
 
   const content = (layer: "base" | "themed") => (
     <>
@@ -122,13 +135,13 @@ export function ExperienceRow({ e }: { e: Experience }) {
       onPointerEnter={(ev) => {
         if (ev.pointerType !== "mouse") return;
         setOrigin(ev.clientX, ev.clientY);
-        setActive(true);
+        setHovered(true);
       }}
       onPointerMove={onPointerMove}
       onPointerLeave={(ev) => {
         if (ev.pointerType !== "mouse") return;
         setOrigin(ev.clientX, ev.clientY);
-        setActive(false);
+        setHovered(false);
         reset();
       }}
     >

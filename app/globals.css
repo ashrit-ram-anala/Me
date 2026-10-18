@@ -1155,6 +1155,10 @@ ol {
     opacity: 0.45;
   }
 
+  .grooves-stripes {
+    display: none;
+  }
+
   .xp-layer {
     grid-template-columns: 44px 1fr auto;
     gap: 14px;
@@ -1163,6 +1167,11 @@ ol {
 
   .xp .logo {
     --s: 44px;
+  }
+
+  /* the narrow card crops the sides; keep the figure on the right of the Monster footage in frame */
+  .xp-anime .media {
+    object-position: 100% 50%;
   }
 
   .proj-shot {
@@ -1180,6 +1189,15 @@ ol {
 
   .coin {
     --s: 136px;
+    justify-self: center;
+  }
+
+  .edu-body {
+    text-align: center;
+  }
+
+  .edu-courses {
+    justify-content: center;
   }
 }
 

@@ -65,12 +65,14 @@ export function Grooves() {
           </g>
         ))}
       </g>
-      {STRIPES.map((d) => (
-        <g key={d}>
-          <line className="groove-lip" x1={d} y1={0} x2={0} y2={d} />
-          <line className="groove-pit" x1={d} y1={0} x2={0} y2={d} />
-        </g>
-      ))}
+      <g className="grooves-stripes">
+        {STRIPES.map((d) => (
+          <g key={d}>
+            <line className="groove-lip" x1={d} y1={0} x2={0} y2={d} />
+            <line className="groove-pit" x1={d} y1={0} x2={0} y2={d} />
+          </g>
+        ))}
+      </g>
     </svg>
   );
 }
