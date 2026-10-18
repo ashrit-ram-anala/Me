@@ -67,6 +67,81 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+/* the native scrollbar is painted above the page, out of the paper cursor's reach; Scrollbar draws
+   its own underneath it */
+html {
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* no track: the thumb itself is a groove pressed into the paper */
+.scrollbar {
+  position: fixed;
+  top: 6px;
+  right: 2px;
+  bottom: 6px;
+  width: 14px;
+  z-index: 900;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+/* hidden until the page scrolls; fades back out once it settles */
+.scrollbar[data-active="true"] {
+  opacity: 1;
+  transition-duration: 0.15s;
+}
+
+.scrollbar[data-hidden="true"] {
+  opacity: 0;
+}
+
+/* a wide invisible grip around the narrow groove so it's easy to catch */
+.scrollbar-thumb {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.scrollbar:not([data-active="true"]) .scrollbar-thumb,
+.scrollbar[data-hidden="true"] .scrollbar-thumb {
+  pointer-events: none;
+}
+
+.scrollbar-thumb span {
+  width: 6px;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow:
+    inset 2px 2px 3px rgba(var(--drop), 0.28),
+    inset -1px -1px 1px var(--edge-hi);
+  transition:
+    width 0.25s var(--ease-burst),
+    box-shadow 0.15s;
+}
+
+.scrollbar-thumb:hover span,
+.scrollbar[data-drag="true"] span {
+  width: 8px;
+  box-shadow:
+    inset 2px 2px 4px rgba(var(--drop), 0.4),
+    inset -1px -1px 1px var(--edge-hi);
+}
+
+@media (hover: none) {
+  .scrollbar {
+    display: none;
+  }
+}
+
 body {
   background: var(--paper);
   color: var(--ink);

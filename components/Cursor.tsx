@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-const CLICKABLE = "a, button, [role='button'], .chain-bead";
+const CLICKABLE = "a, button, [role='button'], .chain-bead, .scrollbar-thumb";
 
 /**
  * A cursor pressed into the paper: a small groove that sits on the pointer. Its shade and its lip

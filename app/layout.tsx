@@ -10,6 +10,7 @@ import {
   Yellowtail,
 } from "next/font/google";
 import { Cursor } from "@/components/Cursor";
+import { Scrollbar } from "@/components/Scrollbar";
 import { PullChain } from "@/components/PullChain";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScroll />
         <PullChain />
         {children}
+        <Scrollbar />
         <Cursor />
       </body>
     </html>
