@@ -130,11 +130,11 @@ export const stack: { group: string; items: { name: string; logo: string }[] }[]
       { name: "AWS", logo: "aws" },
       { name: "Docker", logo: "docker" },
       { name: "Kubernetes", logo: "kubernetes" },
+      { name: "Jenkins", logo: "jenkins" },
       { name: "PostgreSQL", logo: "postgres" },
       { name: "MongoDB", logo: "mongodb" },
       { name: "Redis", logo: "redis" },
       { name: "Firebase", logo: "firebase" },
-      { name: "Figma", logo: "figma" },
     ],
   },
 ];
