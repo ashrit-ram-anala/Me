@@ -46,12 +46,12 @@ export type Experience = {
 };
 
 export const experience: Experience[] = [
-  { company: "Tesla", role: "Software Engineer Intern", year: "2026", logo: "tesla", team: "#e31937", fill: "cover", theme: "f1" },
-  { company: "Fidelity Investments", role: "Software Engineer Intern", year: "2025", logo: "fidelity", team: "#368727", fill: "contain", theme: "anime" },
-  { company: "IBM", role: "AI Engineer Fellowship", year: "2025", logo: "ibm", team: "#0f62fe", fill: "cover", theme: "oppenheimer" },
-  { company: "Tennessee Coalition for Better Aging", role: "Engineering Manager", year: "2025", logo: "tcba", team: "#8c1d2c", fill: "cover", theme: "space" },
-  { company: "Foster Source", role: "Full Stack Developer", year: "2024", logo: "fostersource", team: "#f08a24", fill: "cover", theme: "cali" },
-  { company: "Change++", role: "Full Stack Developer", year: "2024", logo: "changepp", team: "#2c7fb8", fill: "contain", theme: "pingpong" },
+  { company: "Tesla", role: "Software Engineer Intern", year: "May 2027 – Aug 2027", logo: "tesla", team: "#e31937", fill: "cover", theme: "f1" },
+  { company: "Tesla", role: "Software Engineer Intern", year: "Jan 2026 – Current", logo: "tesla", team: "#e31937", fill: "cover", theme: "anime" },
+  { company: "IBM", role: "AI Engineer Fellowship", year: "Sep 2025 – Dec 2025", logo: "ibm", team: "#0f62fe", fill: "cover", theme: "oppenheimer" },
+  { company: "Fidelity Investments", role: "Software Engineer Intern", year: "Jun 2025 – Aug 2025", logo: "fidelity", team: "#368727", fill: "contain", theme: "space" },
+  { company: "Foster Source", role: "Full Stack Developer", year: "Sep 2024 – May 2025", logo: "fostersource", team: "#f08a24", fill: "cover", theme: "cali" },
+  { company: "Change++", role: "President, Engineering Manager, Full Stack Developer", year: "Sep 2024 – Current", logo: "changepp", team: "#2c7fb8", fill: "contain", theme: "pingpong" },
 ];
 
 export type Project = {

@@ -36,7 +36,7 @@ export function Experience() {
         <SectionHead num="01" title="Experience" />
         <ol className="xp-list">
           {experience.map((e) => (
-            <ExperienceRow key={e.company} e={e} />
+            <ExperienceRow key={`${e.company}-${e.year}`} e={e} />
           ))}
         </ol>
       </div>

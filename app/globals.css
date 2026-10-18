@@ -812,6 +812,7 @@ ol {
 .xp-year {
   font-size: 13px;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
   color: var(--ink-soft);
 }
 
