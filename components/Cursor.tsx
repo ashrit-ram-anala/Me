@@ -5,8 +5,8 @@ import { useEffect, useRef } from "react";
 const CLICKABLE = "a, button, [role='button'], .chain-bead";
 
 /**
- * A cursor pressed into the paper: a small groove that trails the pointer. Its shade and its lip are
- * separate layers that blend with whatever is underneath (each blend needs its own fixed element,
+ * A cursor pressed into the paper: a small groove that sits on the pointer. Its shade and its lip
+ * are separate layers that blend with whatever is underneath (each blend needs its own fixed element,
  * since a fixed element isolates its children), so over footage the groove takes on the footage's
  * own tones instead of a flat white edge. Over anything clickable it opens up; pressing the mouse
  * presses it deeper. Mouse only; the native cursor stays for touch and for visitors who prefer
@@ -25,32 +25,14 @@ export function Cursor() {
 
     const root = document.documentElement;
     const el = sh.parentElement!;
-    let x = -100;
-    let y = -100;
-    let rx = x;
-    let ry = y;
-    let raf = 0;
 
-    const tick = () => {
-      rx += (x - rx) * 0.35;
-      ry += (y - ry) * 0.35;
-      sh.style.transform = li.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-      raf = Math.abs(x - rx) + Math.abs(y - ry) > 0.1 ? requestAnimationFrame(tick) : 0;
-    };
-
+    // moved straight from the event, not eased in a frame loop: any smoothing reads as lag
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
-      // first move: start at the pointer instead of sweeping in from the corner
-      if (!root.classList.contains("has-cursor")) {
-        rx = e.clientX;
-        ry = e.clientY;
-        root.classList.add("has-cursor");
-      }
-      x = e.clientX;
-      y = e.clientY;
+      root.classList.add("has-cursor");
+      sh.style.transform = li.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       el.dataset.hover = String(!!(e.target as Element | null)?.closest?.(CLICKABLE));
       el.dataset.hidden = "false";
-      if (!raf) raf = requestAnimationFrame(tick);
     };
 
     const onDown = () => (el.dataset.down = "true");
@@ -67,7 +49,6 @@ export function Cursor() {
       window.removeEventListener("pointerup", onUp);
       root.removeEventListener("pointerleave", onLeave);
       root.classList.remove("has-cursor");
-      cancelAnimationFrame(raf);
     };
   }, []);
 
