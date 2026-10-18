@@ -6,7 +6,7 @@ import { Logo } from "./Logo";
 import { useTilt } from "./useTilt";
 
 const MEDIA_VERSION = 19;
-const COLLAPSE_MS = 750;
+const COLLAPSE_MS = 450;
 
 /** Muted, seamlessly looping footage that plays only while its row is hovered. */
 function Footage({ src, poster, active }: { src: string; poster: string; active: boolean }) {
@@ -93,8 +93,13 @@ export function ExperienceRow({ e }: { e: Experience }) {
     const el = ref.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    el.style.setProperty("--x", `${x - r.left}px`);
-    el.style.setProperty("--y", `${y - r.top}px`);
+    const px = x - r.left;
+    const py = y - r.top;
+    el.style.setProperty("--x", `${px}px`);
+    el.style.setProperty("--y", `${py}px`);
+    // just enough radius to cover the farthest corner, so closing starts shrinking visibly at once
+    const far = Math.hypot(Math.max(px, r.width - px), Math.max(py, r.height - py));
+    el.style.setProperty("--rmax", `${Math.ceil(far + 40)}px`);
   };
 
   const content = (layer: "base" | "themed") => (

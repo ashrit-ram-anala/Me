@@ -8,6 +8,27 @@ export const profile = {
   },
 };
 
+export const education = {
+  school: "Vanderbilt University",
+  college: "School of Engineering",
+  degree: "B.S. Computer Science",
+  coursework: [
+    "Data Structures",
+    "Algorithms",
+    "Software Design",
+    "Database Management",
+    "Computer Architecture",
+    "Discrete Structures",
+    "Data Science in Python & R",
+    "CS Ethics",
+    "Operating Systems",
+    "Software Architecture",
+    "Computer Networks",
+    "Programming Languages",
+  ],
+  organizations: ["Change++", "VandyHacks", "VAPS", "Data Science Club", "Claude Builder Club", "GDG"],
+};
+
 export type Theme = "f1" | "oppenheimer" | "space" | "cali" | "anime" | "pingpong";
 
 export type Experience = {

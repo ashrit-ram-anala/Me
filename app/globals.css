@@ -166,8 +166,8 @@ ol {
 
 /* the name is lit by the cursor (see HeroLight) */
 .name.raised {
-  --sx: calc(var(--lx, -0.7) * -1px);
-  --sy: calc(var(--ly, -0.7) * -1px);
+  --sx: calc(var(--lx, -0.7) * -1.2px);
+  --sy: calc(var(--ly, -0.7) * -1.2px);
 }
 
 .logo {
@@ -352,6 +352,161 @@ ol {
     transform 0.12s ease-out;
 }
 
+/* education */
+
+.edu {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* shadows live on the wrapper: a mask on the same element would clip them away */
+.seal {
+  display: block;
+  width: 190px;
+  height: 190px;
+  filter: drop-shadow(-0.7px -0.7px 0 #fff) drop-shadow(0.9px 1px 0 #b9ae9b) drop-shadow(1.2px 2px 2px rgba(80, 66, 46, 0.35));
+}
+
+.seal-glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #f4f1eb;
+  -webkit-mask: url(/masks/vanderbilt-seal.png) center / contain no-repeat;
+  mask: url(/masks/vanderbilt-seal.png) center / contain no-repeat;
+}
+
+.edu-school {
+  font-family: var(--font-serif), serif;
+  font-size: 30px;
+  line-height: 1.1;
+  color: var(--ink-strong);
+}
+
+.edu-degree {
+  margin-top: 6px;
+  font-weight: 500;
+  color: var(--ink-strong);
+}
+
+.edu-college {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* coursework as pills raised off the page */
+.edu-courses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.edu-courses li {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 1px 1px rgba(90, 76, 56, 0.1),
+    2px 3px 7px rgba(150, 138, 118, 0.28);
+}
+
+.edu-courses .course-toggle {
+  box-shadow: none;
+}
+
+.courses-wrap {
+  position: relative;
+  margin-top: 18px;
+}
+
+.courses-wrap .edu-courses {
+  margin-top: 0;
+}
+
+/* room for the pills' shadows at the clip edge */
+.courses-clip {
+  overflow: hidden;
+  margin: -6px -10px -12px -6px;
+  padding: 6px 10px 12px 6px;
+  box-sizing: content-box;
+  transition: height 0.5s var(--ease-burst);
+}
+
+.courses-probe {
+  position: absolute;
+  inset: 0 0 auto;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.course-extra {
+  animation: course-in 0.4s calc(0.04s * var(--i)) var(--ease-burst) both;
+}
+
+.course-extra.course-leaving {
+  animation: course-out 0.3s var(--ease-burst) both;
+}
+
+@keyframes course-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes course-out {
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* the toggle is plain clickable text, sized and padded to line up with the chips */
+.edu-courses .course-toggle {
+  padding: 0;
+  box-shadow: none;
+  background: none;
+}
+
+.course-toggle button {
+  padding: 5px 4px;
+  border: 0;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-strong);
+  background: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+
+.course-toggle button:hover {
+  text-decoration-color: currentColor;
+}
+
+.edu-orgs {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.edu-label {
+  margin-right: 6px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 /* stack */
 
 .stack {
@@ -432,6 +587,7 @@ ol {
 .xp {
   position: relative;
   display: grid;
+  will-change: transform;
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.25s ease-out;
 }
@@ -468,7 +624,8 @@ ol {
   color: var(--ink-soft);
 }
 
-/* the burst: a circle that grows from the pointer's entry point */
+/* the burst: a dot at the pointer that blooms open. clip-path stays cheap while video plays under
+   it (a gradient mask would force the whole layer to repaint every frame). */
 .xp-themed {
   position: relative;
   z-index: 1;
@@ -477,7 +634,7 @@ ol {
   pointer-events: none;
   color: #fff;
   clip-path: circle(0px at var(--x, 50%) var(--y, 50%));
-  transition: clip-path 0.7s var(--ease-burst);
+  transition: clip-path 0.4s cubic-bezier(0.45, 0, 0.55, 1);
   box-shadow: 0 24px 50px -20px rgba(30, 22, 12, 0.55);
 }
 
@@ -489,13 +646,60 @@ ol {
 .xp-glare {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.22), transparent 45%);
-  mix-blend-mode: soft-light;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.1), transparent 45%);
   pointer-events: none;
 }
 
 .xp[data-active="true"] .xp-themed {
-  clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+  clip-path: circle(var(--rmax, 900px) at var(--x, 50%) var(--y, 50%));
+  transition: clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* the footage lands like a shot: eases out of a slight zoom (transform only, so it stays on the GPU) */
+.xp-themed .media {
+  transform: scale(1.14);
+  will-change: transform;
+  transition: transform 0.4s ease-in;
+}
+
+.xp[data-active="true"] .xp-themed .media {
+  transform: none;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* over-bright exposure settling down: a white layer fading out, instead of filtering the video */
+.xp-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0.28;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.xp[data-active="true"] .xp-bg::after {
+  opacity: 0;
+  transition: opacity 1.1s ease-out;
+}
+
+/* the themed text rises into focus just behind the bloom */
+.xp-themed .xp-text,
+.xp-themed .xp-year {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.xp[data-active="true"] .xp-themed .xp-text,
+.xp[data-active="true"] .xp-themed .xp-year {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.5s 0.18s,
+    transform 0.6s 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .xp-bg {
@@ -551,20 +755,6 @@ ol {
   color: #fff;
   font-weight: 500;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
-}
-
-/* slow push-in on stills so they feel filmed rather than placed */
-.xp[data-active="true"] img.media {
-  animation: push 9s ease-out both;
-}
-
-@keyframes push {
-  from {
-    scale: 1.08;
-  }
-  to {
-    scale: 1;
-  }
 }
 
 /* ───────── F1 ───────── */
@@ -713,7 +903,6 @@ ol {
   inset: 0;
   background: #fff;
   opacity: 0;
-  mix-blend-mode: overlay;
 }
 
 .xp[data-active="true"] .monster-flicker {
@@ -726,13 +915,13 @@ ol {
     opacity: 0;
   }
   4% {
-    opacity: 0.12;
+    opacity: 0.05;
   }
   6% {
     opacity: 0;
   }
   47% {
-    opacity: 0.07;
+    opacity: 0.03;
   }
   49% {
     opacity: 0;
@@ -756,25 +945,6 @@ ol {
     0 0 1px rgba(255, 255, 255, 0.6),
     3px 1px 0 rgba(160, 14, 22, 0.75),
     6px 2px 10px rgba(160, 14, 22, 0.55);
-}
-
-.xp[data-active="true"].xp-anime .xp-co {
-  transform-origin: left center;
-  animation: title-in 0.9s 0.1s ease-out both;
-}
-
-/* fades and focuses in without changing the text's width, so long names never re-wrap */
-@keyframes title-in {
-  from {
-    opacity: 0;
-    filter: blur(6px);
-    transform: scale(1.04);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
 }
 
 .xp-anime .xp-themed .xp-role {
@@ -819,10 +989,21 @@ ol {
   .stack-grid {
     column-gap: 30px;
   }
+
+  .edu {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .seal {
+    width: 136px;
+    height: 136px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .xp-themed {
+  .xp-themed,
+  .xp[data-active="true"] .xp-themed {
     transition-duration: 0.25s;
   }
 

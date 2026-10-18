@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 const RINGS = [110, 190, 270, 350, 430];
+const DEPTH = Math.SQRT2 * 0.7; // length of the light vector
 const STRIPES = [36, 86, 136, 186]; // where each corner stripe meets the top and left edges (px)
 
 /**
@@ -35,9 +36,10 @@ export function HeroLight() {
       const dx = e.clientX - window.innerWidth / 2;
       const dy = e.clientY - window.innerHeight / 2;
       const len = Math.hypot(dx, dy) || 1;
-      // the light is where the cursor is, so it shines from that side
-      tx = (dx / len) * 0.9;
-      ty = (dy / len) * 0.9;
+      // the light is where the cursor is, so it shines from that side. Fixed length = the resting
+      // (-0.7, -0.7) depth, so the name never gets shallower than the static raised text.
+      tx = (dx / len) * DEPTH;
+      ty = (dy / len) * DEPTH;
       if (!raf) raf = requestAnimationFrame(tick);
     };
 

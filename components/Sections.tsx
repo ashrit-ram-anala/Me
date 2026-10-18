@@ -1,5 +1,6 @@
-import { experience, profile, projects, stack } from "./data";
+import { education, experience, profile, projects, stack } from "./data";
 import { HeroLight } from "./HeroLight";
+import { Coursework } from "./Coursework";
 import { ExperienceRow } from "./ExperienceRow";
 import { Logo } from "./Logo";
 import { ProjectRow } from "./ProjectRow";
@@ -57,11 +58,36 @@ export function Projects() {
   );
 }
 
+export function Education() {
+  return (
+    <section className="sec" id="education" aria-label="Education">
+      <div className="wrap">
+        <SectionHead num="03" title="Education" />
+        <div className="edu">
+          {/* Vanderbilt's seal, raised out of the paper like the logo glyphs */}
+          <span className="seal" aria-hidden="true">
+            <span className="seal-glyph" />
+          </span>
+          <div className="edu-body">
+            <p className="edu-school">{education.school}</p>
+            <p className="edu-degree">{education.degree}</p>
+            <p className="edu-college">{education.college}</p>
+            <Coursework items={education.coursework} />
+            <p className="edu-orgs">
+              <span className="edu-label">Involved in</span> {education.organizations.join(" · ")}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function Stack() {
   return (
     <section className="sec" id="stack" aria-label="Stack">
       <div className="wrap">
-        <SectionHead num="03" title="Stack" />
+        <SectionHead num="04" title="Stack" />
         <div className="stack">
           {stack.map((g) => (
             <div key={g.group}>
@@ -86,7 +112,7 @@ export function Contact() {
   return (
     <section className="sec" id="contact" aria-label="Contact">
       <div className="wrap">
-        <SectionHead num="04" title="Contact" />
+        <SectionHead num="05" title="Contact" />
         <p className="contact-big raised">Let&rsquo;s talk.</p>
         <p className="contact-links">
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
