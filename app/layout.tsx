@@ -23,7 +23,7 @@ const winter = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "500"], 
 const cali = Yellowtail({ subsets: ["latin"], weight: "400", variable: "--font-cali" });
 
 export const metadata: Metadata = {
-  title: "Ashrit Anala",
+  title: "Ashrit Anala | Portfolio",
   description: "Software engineer and student at Vanderbilt University.",
 };
 
