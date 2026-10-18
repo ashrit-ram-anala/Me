@@ -1,6 +1,6 @@
 export const profile = {
   name: "Ashrit Anala",
-  tagline: "SWE at Tesla, student at Vanderbilt.",
+  tagline: "SWE at Tesla, CS at Vanderbilt.",
   email: "ashritanala@gmail.com",
   links: {
     github: "https://github.com/ashrit-ram-anala",
@@ -26,7 +26,7 @@ export const education = {
     "Computer Networks",
     "Programming Languages",
   ],
-  organizations: ["Change++", "VandyHacks", "VAPS", "Data Science Club", "Claude Builder Club", "GDG"],
+  organizations: ["Change++", "VandyHacks", "VAPS", "Claude Builder Club"],
 };
 
 export type Theme = "f1" | "oppenheimer" | "space" | "cali" | "anime" | "pingpong";

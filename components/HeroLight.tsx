@@ -50,6 +50,11 @@ export function HeroLight() {
     };
   }, []);
 
+  return <Grooves />;
+}
+
+/** The intro's pressed-in grooves. */
+export function Grooves() {
   return (
     <svg className="grooves" aria-hidden="true">
       <g className="grooves-set">

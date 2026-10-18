@@ -9,6 +9,7 @@ import {
   Titillium_Web,
   Yellowtail,
 } from "next/font/google";
+import { PullChain } from "@/components/PullChain";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 
@@ -29,9 +30,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const fonts = [sans, serif, f1, manga, storybook, space, winter, cali].map((f) => f.variable).join(" ");
   return (
-    <html lang="en" className={fonts}>
+    <html lang="en" className={fonts} suppressHydrationWarning>
+      <head>
+        {/* pick the theme before first paint so there's no flash of the wrong one */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <SmoothScroll />
+        <PullChain />
         {children}
       </body>
     </html>
