@@ -9,6 +9,7 @@ import {
   Titillium_Web,
   Yellowtail,
 } from "next/font/google";
+import { Cursor } from "@/components/Cursor";
 import { PullChain } from "@/components/PullChain";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScroll />
         <PullChain />
         {children}
+        <Cursor />
       </body>
     </html>
   );
