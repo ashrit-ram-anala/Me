@@ -495,8 +495,8 @@ ol {
   width: 100%;
   height: 100%;
   background: var(--seal-face);
-  -webkit-mask: url(/masks/vanderbilt-seal.png) center / contain no-repeat;
-  mask: url(/masks/vanderbilt-seal.png) center / contain no-repeat;
+  -webkit-mask: url(/masks/vanderbilt-seal.png?v=2) center / contain no-repeat;
+  mask: url(/masks/vanderbilt-seal.png?v=2) center / contain no-repeat;
 }
 
 .edu-school {
