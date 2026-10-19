@@ -18,18 +18,19 @@
   --drop: 90, 76, 56;
   --tile-hi: rgba(255, 255, 255, 0.7);
   --face: #f7f5f0;
-  --pit: rgba(110, 94, 70, 0.25);
-  --lip: rgba(255, 255, 255, 0.95);
   --rope: #e3dccf;
   --rope-dark: #b8ad99;
   --rope-light: #fbf9f4;
   /* the name and the cursor need more relief than the rest of the sheet to stay legible */
   --name-face: #f7f5f0;
-  --name-hi: #fff;
+  --name-hi: transparent;
   --name-lo: #786b56;
   --name-lo2: #8f826c;
   --name-drop: 0.37;
   --name-contour: rgba(90, 76, 56, 0.85);
+  --ridge-face: #f7f5f0;
+  --ridge-side: #b2a793;
+  --ridge-drop: 0.22;
   --cursor-shade: 0.95;
   --cursor-ring: 0.7;
   --cursor-lip: rgba(255, 255, 255, 0.7);
@@ -63,8 +64,6 @@
   --drop: 0, 0, 0;
   --tile-hi: rgba(255, 255, 255, 0.07);
   --face: #3b3731;
-  --pit: rgba(0, 0, 0, 0.6);
-  --lip: rgba(255, 255, 255, 0.08);
   --rope: #3c3832;
   --rope-dark: #1b1916;
   --rope-light: #5a554c;
@@ -74,6 +73,9 @@
   --name-lo2: #100f0d;
   --name-drop: 0.7;
   --name-contour: transparent;
+  --ridge-face: #2a2723;
+  --ridge-side: #0a0908;
+  --ridge-drop: 0.7;
   --cursor-shade: 0.7;
   --cursor-ring: 0.5;
   --cursor-lip: rgba(255, 255, 255, 0.2);
@@ -320,8 +322,18 @@ ol {
   width: 100%;
 }
 
-/* concentric grooves pressed into the intro, lit by the cursor (see HeroLight) */
-.grooves {
+/* concentric ridges raised off the intro, built like the raised name: a flat top face over a solid
+   side wall, and a soft cast shadow, so they read as walls extruded from the sheet. The faces and the
+   shadow never move; the cursor leans the view a little (see HeroLight), so the walls shift toward
+   the side being looked at, lit when they face the top-left light and dark when they face away */
+.ridges {
+  --wx: calc(var(--vx, 0.7) * 3.5px);
+  --wy: calc(var(--vy, 0.7) * 3.5px);
+  --wall: color-mix(
+    in srgb,
+    var(--ridge-side) clamp(35%, calc(60% + (var(--vx, 0.7) + var(--vy, 0.7)) * 28%), 100%),
+    var(--ridge-face)
+  );
   position: absolute;
   inset: 0;
   width: 100%;
@@ -332,27 +344,42 @@ ol {
   mask: linear-gradient(180deg, #000 70%, transparent);
 }
 
-/* centred off to the right, partly off the page; drifts a few px away from the light */
-.grooves-set {
-  transform: translate(calc(90% + var(--lx, -0.7) * -6px), calc(56% + var(--ly, -0.7) * -6px));
+/* centred off to the right, partly off the page */
+.ridges-set {
+  transform: translate(90%, 56%);
   transform-box: view-box;
 }
 
-.grooves circle,
-.grooves line {
+.ridges circle,
+.ridges line {
   fill: none;
-  stroke-width: 1.35px;
+  stroke-width: 5px;
 }
 
-/* a groove is a dark pit with a bright lip on the side facing away from the light */
-.groove-pit {
-  stroke: var(--pit);
-  transform: translate(calc(var(--lx, -0.7) * 1px), calc(var(--ly, -0.7) * 1px));
+.ridge-face {
+  stroke: var(--ridge-face);
 }
 
-.groove-lip {
-  stroke: var(--lip);
-  transform: translate(calc(var(--lx, -0.7) * -1.3px), calc(var(--ly, -0.7) * -1.3px));
+/* the wall in three steps down to the paper, the deepest edge a touch darker */
+.ridge-side {
+  stroke: var(--wall);
+  transform: translate(calc(var(--wx) / 3), calc(var(--wy) / 3));
+}
+
+.ridge-side2 {
+  stroke: var(--wall);
+  transform: translate(calc(var(--wx) * 2 / 3), calc(var(--wy) * 2 / 3));
+}
+
+.ridge-side3 {
+  stroke: color-mix(in srgb, var(--wall) 85%, rgb(var(--drop)));
+  transform: translate(var(--wx), var(--wy));
+}
+
+.ridge-drop {
+  stroke: rgba(var(--drop), var(--ridge-drop));
+  filter: blur(4px);
+  transform: translate(5px, 7px);
 }
 
 .sec-head {
@@ -1355,11 +1382,11 @@ ol {
     margin: 0 -10px;
   }
 
-  .grooves {
+  .ridges {
     opacity: 0.45;
   }
 
-  .grooves-stripes {
+  .ridges-stripes {
     display: none;
   }
 
