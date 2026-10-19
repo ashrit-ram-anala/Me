@@ -9,7 +9,7 @@ const STRIPES = [36, 86, 136, 186]; // where each corner stripe meets the top an
 /**
  * Treats the cursor as a lamp over the paper. Publishes the light direction as --lx / --ly on
  * <html> (a unit vector pointing from the light toward the page centre, eased), which the raised
- * name and the grooves below use to cast their highlights and shadows.
+ * name, the closing line and the grooves below use to cast their highlights and shadows.
  * Also renders the grooves pressed into the intro: concentric rings on the right and diagonal
  * stripes cutting off the top-left corner.
  */
