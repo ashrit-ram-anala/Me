@@ -35,8 +35,8 @@
   --name-drop: 0.37;
   --name-contour: rgba(90, 76, 56, 0.85);
   --ridge-face: #f7f5f0;
-  --ridge-side: #b2a793;
-  --ridge-drop: 0.22;
+  --ridge-side: #c2b8a6;
+  --ridge-drop: 0.16;
   --cursor-shade: 0.95;
   --cursor-ring: 0.7;
   --cursor-lip: rgba(255, 255, 255, 0.7);
@@ -86,8 +86,8 @@
   --name-drop: 0.7;
   --name-contour: transparent;
   --ridge-face: #2a2723;
-  --ridge-side: #0a0908;
-  --ridge-drop: 0.7;
+  --ridge-side: #0f0e0c;
+  --ridge-drop: 0.55;
   --cursor-shade: 0.7;
   --cursor-ring: 0.5;
   --cursor-lip: rgba(255, 255, 255, 0.2);
@@ -344,8 +344,8 @@ ol {
    shadow never move; the cursor leans the view a little (see HeroLight), so the walls shift toward
    the side being looked at, lit when they face the top-left light and dark when they face away */
 .ridges {
-  --wx: calc(var(--vx, 0.7) * 3.5px);
-  --wy: calc(var(--vy, 0.7) * 3.5px);
+  --wx: calc(var(--vx, 0.7) * 2.8px);
+  --wy: calc(var(--vy, 0.7) * 2.8px);
   --wall: color-mix(
     in srgb,
     var(--ridge-side) clamp(35%, calc(60% + (var(--vx, 0.7) + var(--vy, 0.7)) * 28%), 100%),
@@ -1184,19 +1184,44 @@ ol {
   color: #f0c27a;
 }
 
-/* ───────── California · Golden Gate ───────── */
+/* ───────── California · golden hour ───────── */
 
 .xp-cali .media {
   object-position: 50% 50%;
 }
 
+/* a soft, rounded 70s serif in sun-washed cream, lit by the low sun */
 .xp-cali .xp-themed .xp-co {
-  font-family: var(--font-cali), cursive;
-  font-size: 30px;
+  font-family: var(--font-cali), serif;
+  font-style: italic;
+  font-weight: 700;
+  font-variation-settings:
+    "SOFT" 100,
+    "WONK" 1;
+  font-size: 25px;
   line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #fff3df;
   text-shadow:
-    2px 2px 0 #c0362c,
-    0 2px 16px rgba(0, 0, 0, 0.6);
+    0 0 18px rgba(255, 158, 64, 0.45),
+    0 2px 12px rgba(0, 0, 0, 0.55);
+}
+
+.xp-cali .xp-themed .xp-role {
+  font-family: var(--font-cali), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "SOFT" 100;
+  font-size: 15px;
+  color: rgba(255, 238, 214, 0.88);
+}
+
+.xp-cali .xp-themed .xp-year {
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #ffd29a;
 }
 
 /* ───────── Ping-pong ───────── */
@@ -1278,33 +1303,38 @@ ol {
   }
 }
 
-/* heavy white serif with a red ghost, after the show's title card */
-/* old printed-book serif, after the show's picture book */
+/* in the spirit of the show's logo, not a copy: heavy extra-wide caps over a condensed caption line,
+   the dates in a plain book serif, all in the same quiet off-white */
 .xp-anime .xp-themed .xp-co {
-  font-family: var(--font-storybook), serif;
-  font-size: 22px;
+  font-family: var(--font-monster), sans-serif;
+  font-weight: 900;
+  font-stretch: 125%;
+  font-size: 19px;
   line-height: 1.15;
+  text-transform: uppercase;
   white-space: nowrap;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   color: #f4f0ea;
-  text-shadow:
-    0 0 1px rgba(255, 255, 255, 0.6),
-    3px 1px 0 rgba(160, 14, 22, 0.75),
-    6px 2px 10px rgba(160, 14, 22, 0.55);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 
 .xp-anime .xp-themed .xp-role {
-  font-family: var(--font-winter), serif;
-  font-style: italic;
-  font-size: 16px;
-  color: #cfc5b6;
+  font-family: var(--font-monster), sans-serif;
+  font-weight: 700;
+  font-stretch: 62%;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #d9d2c6;
 }
 
 .xp-anime .xp-themed .xp-year {
-  font-family: var(--font-manga), serif;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  font-family: var(--font-winter), serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.02em;
   color: #f4f0ea;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85);
 }
 
 /* ───────────────────────── cursor ───────────────────────── */

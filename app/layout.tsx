@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import {
+  Archivo,
   Cormorant_Garamond,
+  Fraunces,
   Inter_Tight,
-  IM_Fell_English,
   Instrument_Serif,
-  Shippori_Mincho_B1,
   Space_Grotesk,
   Titillium_Web,
-  Yellowtail,
 } from "next/font/google";
 import { Cursor } from "@/components/Cursor";
 import { Scrollbar } from "@/components/Scrollbar";
@@ -18,11 +17,12 @@ import "./globals.css";
 const sans = Inter_Tight({ subsets: ["latin"], variable: "--font-sans" });
 const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-serif" });
 const f1 = Titillium_Web({ subsets: ["latin"], weight: ["400", "700", "900"], style: ["normal", "italic"], variable: "--font-f1" });
-const manga = Shippori_Mincho_B1({ weight: ["500", "800"], preload: false, variable: "--font-manga" });
-const storybook = IM_Fell_English({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-storybook" });
+// the Monster logo's extra-wide black caps and its condensed caption line, from one width axis
+const monster = Archivo({ subsets: ["latin"], axes: ["wdth"], preload: false, variable: "--font-monster" });
 const space = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-space" });
 const winter = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "500"], style: ["normal", "italic"], variable: "--font-winter" });
-const cali = Yellowtail({ subsets: ["latin"], weight: "400", variable: "--font-cali" });
+// soft, rounded 70s California serif for the golden-hour boulevard
+const cali = Fraunces({ subsets: ["latin"], style: ["italic"], axes: ["SOFT", "WONK"], preload: false, variable: "--font-cali" });
 
 export const metadata: Metadata = {
   title: "Ashrit Anala | Portfolio",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const fonts = [sans, serif, f1, manga, storybook, space, winter, cali].map((f) => f.variable).join(" ");
+  const fonts = [sans, serif, f1, monster, space, winter, cali].map((f) => f.variable).join(" ");
   return (
     <html lang="en" className={fonts} suppressHydrationWarning>
       <head>
