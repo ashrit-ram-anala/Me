@@ -21,6 +21,12 @@
   --rope: #e3dccf;
   --rope-dark: #b8ad99;
   --rope-light: #fbf9f4;
+  --orb-hi: #fff;
+  --orb-base: #ebe6dc;
+  --orb-dark: #bfb4a1;
+  --orb-bounce: rgba(255, 255, 255, 0.45);
+  --orb-core: 0.3;
+  --orb-cast: 0.35;
   /* the name and the cursor need more relief than the rest of the sheet to stay legible */
   --name-face: #f7f5f0;
   --name-hi: transparent;
@@ -67,6 +73,12 @@
   --rope: #3c3832;
   --rope-dark: #1b1916;
   --rope-light: #5a554c;
+  --orb-hi: #6e685e;
+  --orb-base: #3d3933;
+  --orb-dark: #161412;
+  --orb-bounce: rgba(255, 255, 255, 0.08);
+  --orb-core: 0.6;
+  --orb-cast: 0.7;
   --name-face: #5f5950;
   --name-hi: rgba(255, 255, 255, 0.28);
   --name-lo: #0a0908;
@@ -249,7 +261,9 @@ ol {
   stroke-linecap: round;
 }
 
-/* the bead: a small round knob, matte, raised off the page like the social buttons */
+/* the bead: a small round orb lit from the top-left like the rest of the sheet. A soft highlight up
+   top, the body rolling off into its own shade at the lower right, a little light bounced back up from
+   the paper along its underside, and a shadow cast onto the page */
 .chain-bead {
   position: absolute;
   top: 123px;
@@ -259,11 +273,14 @@ ol {
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--paper-glyph);
+  background:
+    radial-gradient(circle at 62% 88%, var(--orb-bounce), transparent 38%),
+    radial-gradient(circle at 34% 30%, var(--orb-hi) 0%, var(--orb-base) 42%, var(--orb-dark) 100%);
   box-shadow:
-    inset 0 0 0 0.5px rgba(var(--drop), 0.12),
-    inset 0 1px 0 var(--tile-hi),
-    1px 3px 6px var(--shadow);
+    inset -1.5px -2px 3px rgba(var(--drop), var(--orb-core)),
+    0 0 0 0.5px rgba(var(--drop), 0.15),
+    2px 4px 4px rgba(var(--drop), var(--orb-cast)),
+    4px 9px 12px rgba(var(--drop), calc(var(--orb-cast) * 0.5));
   cursor: grab;
   pointer-events: auto;
   touch-action: none;
