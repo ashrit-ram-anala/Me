@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import type { Experience, Theme } from "./data";
 import { Logo } from "./Logo";
+import { play, setSound, stop, tracks, useSound, warm } from "./sound";
 import { useScrollFocus } from "./useScrollFocus";
 import { useTilt } from "./useTilt";
 
@@ -92,6 +93,27 @@ export function ExperienceRow({ e }: { e: Experience }) {
   const [hovered, setHovered] = useState(false);
   const focused = useScrollFocus(ref);
   const active = hovered || focused;
+  const sound = useSound(e.theme);
+
+  useEffect(() => {
+    if (active) warm(e.theme);
+    if (active && sound) play(e.theme);
+    else stop(e.theme);
+  }, [active, sound, e.theme]);
+
+  // while the mouse is on a row with a song, space plays or pauses it instead of scrolling
+  useEffect(() => {
+    if (!hovered || !tracks[e.theme]) return;
+    const onKey = (ev: KeyboardEvent) => {
+      if (ev.code !== "Space" || ev.repeat || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+      const t = ev.target as HTMLElement | null;
+      if (t?.closest("input, textarea, select, button, [contenteditable]")) return;
+      ev.preventDefault();
+      setSound(e.theme, !sound);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [hovered, sound, e.theme]);
 
   const setOrigin = (x: number, y: number) => {
     const el = ref.current;

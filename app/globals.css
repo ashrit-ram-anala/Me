@@ -1493,3 +1493,15 @@ ol {
     animation-delay: 0s !important;
   }
 }
+
+/* the hidden YouTube players behind the rows; only their sound is used */
+#sound-shelf {
+  position: fixed;
+  left: -10px;
+  top: -10px;
+  width: 2px;
+  height: 2px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
