@@ -19,7 +19,7 @@ export const tracks: Partial<Record<Theme, Track>> = {
   oppenheimer: { id: "4JZ-o3iAJv4", start: 0 }, // Ludwig Göransson, Can You Hear the Music
   space: { id: "uD4izuDMUQA", start: 497, end: 527 }, // melodysheep, Timelapse of the Future
   cali: { id: "f7ztKV_BJyo", start: 0 }, // The Mamas & the Papas, California Dreamin'
-  pingpong: { id: "mkMazpdeP_A", start: 0 }, // The Marías, Ride (official visualizer)
+  pingpong: { id: "4zya9pwLJik", start: 0 }, // The Marías, Spin Me Around (official audio)
 };
 
 const VOLUME = 50;
