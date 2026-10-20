@@ -37,12 +37,11 @@
   --ridge-face: #f7f5f0;
   --ridge-side: #c2b8a6;
   --ridge-drop: 0.16;
-  --cursor-shade: 0.95;
-  --cursor-ring: 0.7;
-  --cursor-lip: rgba(255, 255, 255, 0.7);
-  --cursor-lip-out: rgba(255, 255, 255, 0.7);
-  --cursor-halo: transparent;
-  --cursor-lip-blend: overlay;
+  --cursor-face: #fbfaf7;
+  --cursor-rim: transparent;
+  --cursor-edge: #786b56;
+  --cursor-contour: rgba(90, 76, 56, 0.8);
+  --cursor-drop: 0.6;
   /* embossed logos and social icons: a face and one cut edge, stronger than the sheet's so they read */
   --icon-face: #fbfaf7;
   --icon-edge: #9d907a;
@@ -88,12 +87,11 @@
   --ridge-face: #2a2723;
   --ridge-side: #0f0e0c;
   --ridge-drop: 0.55;
-  --cursor-shade: 0.7;
-  --cursor-ring: 0.5;
-  --cursor-lip: rgba(255, 255, 255, 0.2);
-  --cursor-lip-out: transparent;
-  --cursor-halo: rgba(255, 255, 255, 0.16);
-  --cursor-lip-blend: screen;
+  --cursor-face: var(--name-face);
+  --cursor-rim: var(--name-hi);
+  --cursor-edge: #070605;
+  --cursor-contour: rgba(0, 0, 0, 0.85);
+  --cursor-drop: 0.9;
   --icon-face: #5f5950;
   --icon-edge: #070605;
   --icon-drop: 0.75;
@@ -1353,8 +1351,8 @@ ol {
   display: block;
 }
 
-/* the outer element only moves; the inner span carries the look and the states */
-.cursor-ring {
+/* the outer element only moves; the svg carries the look and the states */
+.cursor-arrow {
   position: fixed;
   top: 0;
   left: 0;
@@ -1362,63 +1360,48 @@ ol {
   pointer-events: none;
 }
 
-/* a groove pressed into the sheet: a dark inside edge and a bright lip, each blended with what's
-   underneath so they deepen and catch light in its colours */
-.cursor-shade {
-  mix-blend-mode: multiply;
-}
-
-.cursor-lip {
-  mix-blend-mode: var(--cursor-lip-blend);
-}
-
-.cursor-ring span {
+/* raised arrow in the sheet's own color (off-white, or charcoal with a lit rim in the dark): a face
+   drawn round with a fine contour, one cut edge toward the light's far
+   side, and a cast shadow. Drawn at 18px, about the size of the system arrow. Its tip (4, 2.5 in
+   the 24-unit box) sits on the pointer. */
+.cursor-arrow svg {
   position: absolute;
-  border-radius: 50%;
+  left: -3px;
+  top: -1.9px;
   width: 18px;
   height: 18px;
-  margin: -9px 0 0 -9px;
+  overflow: visible;
+  transform-origin: 3px 1.9px;
+  fill: var(--cursor-face);
+  stroke: var(--cursor-face);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  filter: drop-shadow(-0.5px -0.5px 0 var(--cursor-rim)) drop-shadow(0 0 0.6px var(--cursor-contour))
+    drop-shadow(0.9px 1px 0 var(--cursor-edge))
+    drop-shadow(1.5px 2.6px 2.4px rgba(var(--drop), var(--cursor-drop)));
   transition:
-    width 0.35s var(--ease-burst),
-    height 0.35s var(--ease-burst),
-    margin 0.35s var(--ease-burst),
-    opacity 0.25s,
-    box-shadow 0.15s;
+    transform 0.25s var(--ease-burst),
+    filter 0.15s,
+    opacity 0.25s;
 }
 
-.cursor-shade span {
-  box-shadow:
-    inset 1.5px 1.5px 2px rgba(var(--drop), var(--cursor-shade)),
-    0 0 0 1px rgba(var(--drop), var(--cursor-ring));
+/* over something clickable it lifts toward the viewer: a touch larger, its shadow cast further */
+.cursor[data-hover="true"] .cursor-arrow svg {
+  transform: scale(1.08);
+  filter: drop-shadow(-0.5px -0.5px 0 var(--cursor-rim)) drop-shadow(0 0 0.6px var(--cursor-contour))
+    drop-shadow(0.9px 1px 0 var(--cursor-edge))
+    drop-shadow(2.3px 3.8px 3.5px rgba(var(--drop), var(--cursor-drop)));
 }
 
-.cursor-lip span {
-  box-shadow:
-    inset -1px -1px 0 var(--cursor-lip),
-    0.5px 0.5px 0 0.5px var(--cursor-lip-out),
-    0 0 0 1px var(--cursor-halo);
+/* pressing pushes it back down: smaller and tight to the sheet */
+.cursor[data-down="true"] .cursor-arrow svg {
+  transform: scale(0.92);
+  filter: drop-shadow(-0.5px -0.5px 0 var(--cursor-rim)) drop-shadow(0 0 0.6px var(--cursor-contour))
+    drop-shadow(0.6px 0.7px 0 var(--cursor-edge))
+    drop-shadow(0.6px 1px 1px rgba(var(--drop), var(--cursor-drop)));
 }
 
-.cursor[data-hover="true"] .cursor-ring span {
-  width: 26px;
-  height: 26px;
-  margin: -13px 0 0 -13px;
-}
-
-/* pressing pushes it deeper: a tighter, darker groove */
-.cursor[data-down="true"] .cursor-ring span {
-  width: 14px;
-  height: 14px;
-  margin: -7px 0 0 -7px;
-}
-
-.cursor[data-down="true"] .cursor-shade span {
-  box-shadow:
-    inset 2px 2px 3px rgba(var(--drop), calc(var(--cursor-shade) + 0.1)),
-    0 0 0 1px rgba(var(--drop), var(--cursor-ring));
-}
-
-.cursor[data-hidden="true"] .cursor-ring span {
+.cursor[data-hidden="true"] .cursor-arrow svg {
   opacity: 0;
 }
 
